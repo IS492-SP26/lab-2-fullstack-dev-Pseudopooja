@@ -4,10 +4,9 @@ import { About } from "@/components/about";
 import { Experience } from "@/components/experience";
 import { Projects } from "@/components/projects";
 import { Skills } from "@/components/skills";
+import { Education } from "@/components/education";
 import { Contact } from "@/components/contact";
 import { Footer } from "@/components/footer";
-import { ScrollToTop } from "@/components/scroll-to-top";
-import { Feedback } from "@/components/feedback";
 
 export default function Home() {
   return (
@@ -19,11 +18,10 @@ export default function Home() {
         <Experience />
         <Projects />
         <Skills />
+        <Education />
         <Contact />
       </main>
       <Footer />
-      <ScrollToTop />
-      <Feedback />
     </>
   );
 }

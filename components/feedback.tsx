@@ -209,7 +209,7 @@ export function Feedback() {
                   Quick Feedback
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  How's my portfolio looking? Your thoughts help me improve!
+                  How&apos;s my portfolio looking? Your thoughts help me improve!
                 </p>
 
                 <form onSubmit={handleSubmit} className="mt-6" noValidate>

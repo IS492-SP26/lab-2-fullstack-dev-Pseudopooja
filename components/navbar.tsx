@@ -1,84 +1,114 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
-
-const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Contact", href: "#contact" },
-];
+import { ArrowUpRight, Menu } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { navigationLinks, site } from "@/lib/site";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => setScrolled(window.scrollY > 12);
     window.addEventListener("scroll", handleScroll);
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-background/95 backdrop-blur-md shadow-sm"
-          : "bg-transparent"
-      }`}
-    >
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
+      <div
+        className={`mx-auto flex max-w-6xl items-center justify-between rounded-full border px-4 py-3 transition-all duration-300 sm:px-5 ${
+          scrolled
+            ? "border-white/60 bg-background/85 shadow-soft backdrop-blur-xl"
+            : "border-transparent bg-transparent shadow-none"
+        }`}
+      >
         <a
-          href="#"
-          className="text-xl font-bold tracking-tight text-primary"
+          href="#hero"
+          className="inline-flex items-center gap-2 text-sm font-semibold tracking-[0.2em] text-foreground transition-opacity hover:opacity-70"
         >
-          Pooja Sahu
+          <span className="font-display text-base tracking-[0.24em]">PS.</span>
+          <span className="hidden text-[0.7rem] uppercase tracking-[0.3em] text-muted-foreground sm:inline">
+            {site.name}
+          </span>
         </a>
 
-        {/* Desktop */}
-        <ul className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-              >
-                {link.label}
-              </a>
-            </li>
+        <nav className="hidden items-center gap-1 md:flex" aria-label="Primary">
+          {navigationLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="rounded-full px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground"
+            >
+              {link.label}
+            </a>
           ))}
-        </ul>
+        </nav>
 
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="text-foreground md:hidden"
-          aria-label={mobileOpen ? "Close menu" : "Open menu"}
-        >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </nav>
-
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <div className="border-t border-border bg-background/95 backdrop-blur-md md:hidden">
-          <ul className="flex flex-col gap-1 px-6 py-4">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="block rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-primary"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+        <div className="hidden md:block">
+          <a
+            href={site.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background transition-transform duration-300 hover:-translate-y-0.5"
+          >
+            Resume
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
         </div>
-      )}
+
+        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+          <SheetTrigger asChild>
+            <button
+              type="button"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/90 text-foreground transition-colors hover:bg-foreground/5 md:hidden"
+              aria-label="Open navigation menu"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+          </SheetTrigger>
+          <SheetContent
+            side="right"
+            className="border-border bg-background/98 px-5 py-6 sm:max-w-sm"
+          >
+            <div className="flex flex-col gap-6 pt-8">
+              <div>
+                <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground">
+                  Navigate
+                </p>
+                <p className="mt-2 text-lg font-display text-foreground">
+                  {site.name}
+                </p>
+              </div>
+
+              <nav className="flex flex-col gap-2" aria-label="Mobile primary">
+                {navigationLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="rounded-2xl border border-transparent bg-foreground/5 px-4 py-3 text-base text-foreground transition-colors hover:border-border hover:bg-foreground/8"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </nav>
+
+              <a
+                href={site.resume}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-4 py-3 text-sm font-medium text-background"
+              >
+                Resume
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
     </header>
   );
 }
