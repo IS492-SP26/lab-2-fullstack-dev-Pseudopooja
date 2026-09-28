@@ -26,6 +26,7 @@ export const navigationLinks = [
   { label: "Experience", href: "#experience" },
   { label: "Work", href: "#projects" },
   { label: "Skills", href: "#skills" },
+  { label: "Education", href: "#education" },
   { label: "Life", href: "#life" },
   { label: "Contact", href: "#contact" },
 ] as const;
