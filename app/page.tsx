@@ -11,6 +11,8 @@ import { Education } from "@/components/education";
 import { Life } from "@/components/life";
 import { Contact } from "@/components/contact";
 import { Footer } from "@/components/footer";
+import { Feedback } from "@/components/feedback";
+import { ResumeGate } from "@/components/resume-gate";
 
 export default function Home() {
   return (
@@ -30,6 +32,8 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      <ResumeGate />
+      <Feedback />
     </>
   );
 }

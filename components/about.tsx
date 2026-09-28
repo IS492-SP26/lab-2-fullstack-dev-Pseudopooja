@@ -1,5 +1,6 @@
 "use client";
 
+import { ResumeLink } from "@/components/resume-gate";
 import { ArrowRight, Blocks, BrainCircuit, Sparkle, Telescope } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { currentlyCards, site } from "@/lib/site";
@@ -74,15 +75,12 @@ export function About() {
         </div>
 
         <div className="mt-10 flex flex-wrap items-center gap-3">
-          <a
-            href={site.resume}
-            target="_blank"
-            rel="noopener noreferrer"
+          <ResumeLink
             className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-foreground/5"
           >
             Resume
             <ArrowRight className="h-4 w-4" />
-          </a>
+          </ResumeLink>
           <a
             href="#contact"
             className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background"

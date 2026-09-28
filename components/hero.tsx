@@ -1,5 +1,6 @@
 "use client";
 
+import { ResumeLink } from "@/components/resume-gate";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ArrowRight, ArrowUpRight, Github, Linkedin, MapPin } from "lucide-react";
@@ -70,15 +71,12 @@ export function Hero() {
               Explore my work
               <ArrowRight className="h-4 w-4" />
             </a>
-            <a
-              href={site.resume}
-              target="_blank"
-              rel="noopener noreferrer"
+            <ResumeLink
               className="inline-flex items-center gap-2 rounded-full border border-border bg-background/75 px-5 py-3 text-sm font-medium text-foreground transition-colors hover:border-foreground/20 hover:bg-foreground/5"
             >
               Resume
               <ArrowUpRight className="h-4 w-4" />
-            </a>
+            </ResumeLink>
           </div>
 
           <div className="mt-8 flex flex-wrap items-center gap-5 text-sm text-muted-foreground">

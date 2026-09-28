@@ -1,5 +1,6 @@
 "use client";
 
+import { ResumeLink } from "@/components/resume-gate";
 import { useState, useEffect } from "react";
 import { ArrowUpRight, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -78,15 +79,12 @@ export function Navbar() {
         </nav>
 
         <div className="hidden justify-self-end md:block">
-          <a
-            href={site.resume}
-            target="_blank"
-            rel="noopener noreferrer"
+          <ResumeLink
             className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background transition-transform duration-300 hover:-translate-y-0.5"
           >
             Resume
             <ArrowUpRight className="h-4 w-4" />
-          </a>
+          </ResumeLink>
         </div>
 
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -131,15 +129,12 @@ export function Navbar() {
                 ))}
               </nav>
 
-              <a
-                href={site.resume}
-                target="_blank"
-                rel="noopener noreferrer"
+              <ResumeLink onOpen={() => setMobileOpen(false)}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-4 py-3 text-sm font-medium text-background"
               >
                 Resume
                 <ArrowUpRight className="h-4 w-4" />
-              </a>
+              </ResumeLink>
             </div>
           </SheetContent>
         </Sheet>
