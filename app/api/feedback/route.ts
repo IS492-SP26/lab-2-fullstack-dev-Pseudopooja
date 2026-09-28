@@ -1,17 +1,19 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error("Missing Supabase environment variables");
-}
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
 export async function POST(request: NextRequest) {
   try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseAnonKey) {
+      return NextResponse.json(
+        { error: "Missing Supabase environment variables" },
+        { status: 500 }
+      );
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
     const body = await request.json();
     const { name, email, message, rating, anonymous } = body;
 
@@ -24,7 +26,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Insert feedback into Supabase
-    const { data, error } = await supabase.from("FeedbackTable").insert([
+    const { error } = await supabase.from("FeedbackTable").insert([
       {
         name: anonymous ? "Anonymous" : name,
         email: email || null,

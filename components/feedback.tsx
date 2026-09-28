@@ -130,7 +130,7 @@ export function Feedback() {
   };
 
   const fieldClass = (field: keyof FormErrors) =>
-    `w-full rounded-lg border px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 transition-colors ${
+    `w-full rounded-2xl border px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 transition-colors ${
       errors[field] && touched[field]
         ? "border-red-400 bg-red-50/50 focus:ring-red-300 dark:bg-red-950/20"
         : touched[field] && !errors[field] && formData[field as keyof typeof formData]
@@ -145,12 +145,7 @@ export function Feedback() {
         <button
           type="button"
           onClick={() => setShowModal(true)}
-          className="fixed bottom-8 right-8 z-40 flex h-12 w-32 items-center justify-center rounded-full shadow-lg transition-all hover:scale-110 hover:shadow-xl font-semibold text-sm animate-fade-up"
-          style={{
-            backgroundColor: "hsl(174 60% 45%)",
-            color: "#fff",
-            borderRadius: "50px",
-          }}
+          className="animate-fade-up fixed bottom-6 left-6 z-40 inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-medium text-background shadow-soft transition-transform duration-300 hover:-translate-y-0.5"
           aria-label="Send feedback"
         >
           Feedback
@@ -160,14 +155,14 @@ export function Feedback() {
       {/* Feedback Modal */}
       {showModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/40 px-4 backdrop-blur-sm"
           onClick={() => setShowModal(false)}
           role="dialog"
           aria-modal="true"
           aria-label="Send feedback"
         >
           <div
-            className="relative w-full max-w-md rounded-2xl bg-card p-8 shadow-2xl ring-1 ring-border"
+            className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-[1.5rem] border border-border bg-card p-7 shadow-soft sm:p-8"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -186,8 +181,8 @@ export function Feedback() {
             {submitted ? (
               <div className="flex flex-col items-center justify-center py-8">
                 <CheckCircle2 size={48} className="mb-4 text-emerald-500" />
-                <h3 className="text-lg font-bold text-foreground">
-                  Thank You!
+                <h3 className="font-display text-xl font-medium text-foreground">
+                  Thank you!
                 </h3>
                 <p className="mt-2 text-center text-sm text-muted-foreground mb-6">
                   Your feedback matters and helps me improve. I appreciate it!
@@ -196,8 +191,7 @@ export function Feedback() {
                   href="https://www.linkedin.com/in/sahu-pooja/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-                  style={{ backgroundColor: "hsl(200 65% 40%)" }}
+                  className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-opacity hover:opacity-90"
                 >
                   <Linkedin size={16} />
                   Connect on LinkedIn
@@ -205,11 +199,11 @@ export function Feedback() {
               </div>
             ) : (
               <>
-                <h3 className="text-lg font-bold text-foreground">
-                  Quick Feedback
+                <h3 className="font-display text-xl font-medium tracking-[-0.02em] text-foreground">
+                  Quick feedback
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  How's my portfolio looking? Your thoughts help me improve!
+                  How&apos;s my portfolio looking? Your thoughts help me improve!
                 </p>
 
                 <form onSubmit={handleSubmit} className="mt-6" noValidate>
@@ -221,7 +215,7 @@ export function Feedback() {
                       name="anonymous"
                       checked={formData.anonymous}
                       onChange={handleChange}
-                      className="h-4 w-4 rounded border-border"
+                      className="h-4 w-4 rounded border-border accent-[hsl(var(--accent))]"
                     />
                     <label htmlFor="anonymous" className="text-sm text-muted-foreground cursor-pointer">
                       Keep me anonymous
@@ -271,7 +265,7 @@ export function Feedback() {
                       placeholder="your@email.com"
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full rounded-lg border border-input bg-card px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                      className="w-full rounded-2xl border border-input bg-card px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                     />
                   </div>
 
@@ -289,13 +283,14 @@ export function Feedback() {
                             setFormData({ ...formData, rating: star });
                             setTouched((prev) => ({ ...prev, rating: true }));
                           }}
+                          aria-label={`${star} star${star > 1 ? "s" : ""}`}
                           className="transition-transform hover:scale-110"
                         >
                           <Star
                             size={28}
                             className={`${
                               star <= formData.rating
-                                ? "fill-yellow-400 text-yellow-400"
+                                ? "fill-[hsl(var(--accent))] text-[hsl(var(--accent))]"
                                 : "text-muted-foreground"
                             }`}
                           />
@@ -339,10 +334,9 @@ export function Feedback() {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
-                    style={{ backgroundColor: "hsl(174 60% 45%)" }}
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-50"
                   >
-                    {isLoading ? "Sending..." : "Send Feedback"}
+                    {isLoading ? "Sending…" : "Send feedback"}
                     {!isLoading && <Send size={16} />}
                   </button>
                 </form>

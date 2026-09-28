@@ -1,156 +1,93 @@
 "use client";
 
-import Image from "next/image";
-import { BarChart3, Bot, GraduationCap, Zap } from "lucide-react";
+import { ResumeLink } from "@/components/resume-gate";
+import { ArrowRight, Blocks, BrainCircuit, Sparkle, Telescope } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
-import uiucLogo from "./UIUC logo.png";
-import nmimsMogo from "./nmims logo.png";
+import { currentlyCards, site } from "@/lib/site";
+import { trackSpotlight } from "@/lib/spotlight";
 
-const focusAreas = [
-  {
-    icon: BarChart3,
-    label: "Data Governance & Quality",
-    color: "hsl(220 60% 25%)",
-  },
-  {
-    icon: Bot,
-    label: "AI & Responsible Data Use",
-    color: "hsl(174 60% 40%)",
-  },
-  {
-    icon: Zap,
-    label: "Business & Process Analysis",
-    color: "hsl(43 74% 49%)",
-  },
-];
-
-const education = [
-  {
-    school: "University of Illinois Urbana-Champaign",
-    subtitle: "School of Information Science",
-    degree: "Master of Science in Information Management",
-    gpa: "CGPA: 4.0 / 4.0",
-    period: "August 2025 - May 2027 (Expected)",
-    coursework: "Introduction to Generative AI, Sociotechnical Information Systems, Information Consulting",
-    accent: "hsl(174 60% 45%)",
-    logo: uiucLogo,
-  },
-  {
-    school: "NMIMS (Narsee Monjee Institute of Management Studies)",
-    subtitle: "",
-    degree: "MBA in Technology Management & B.E. in Electronics and Telecommunication (Dual Degree)",
-    gpa: "CGPA: 3.53 / 4.0",
-    period: "July 2018 - May 2023",
-    coursework: "Major: Business Intelligence & Analytics | Minor: Marketing Analytics",
-    accent: "hsl(220 60% 25%)",
-    logo: nmimsMogo,
-  },
+// Each card gets its own icon, hover animation, and tint from the background palette
+const icons = [
+  { Icon: Blocks, hover: "group-hover:animate-[iconStack_0.9s_ease-in-out]", hue: "248 75% 62%" },
+  { Icon: BrainCircuit, hover: "group-hover:animate-[iconPulse_1.1s_ease-in-out_infinite]", hue: "22 85% 58%" },
+  { Icon: Telescope, hover: "group-hover:animate-[iconScan_1.4s_ease-in-out]", hue: "165 50% 40%" },
 ];
 
 export function About() {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
-    <section id="about" className="py-20 md:py-28">
-      <div ref={ref} className="mx-auto max-w-6xl px-6" style={{ opacity: isVisible ? undefined : 0 }}>
+    <section id="about" className="py-20 sm:py-24 lg:py-28">
+      <div
+        ref={ref}
+        className="mx-auto max-w-6xl px-6"
+        style={{ opacity: isVisible ? undefined : 0 }}
+      >
         <div className={isVisible ? "animate-fade-up" : ""}>
-          <h2 className="text-center text-3xl font-bold tracking-tight text-primary md:text-4xl">
-            About Me
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground">
+            About / currently
+          </p>
+          <h2 className="mt-4 max-w-2xl font-display text-3xl font-medium tracking-[-0.04em] text-foreground sm:text-4xl lg:text-5xl">
+            A concise picture of how I work and what I am building toward.
           </h2>
-          <div className="mx-auto mt-2 h-1 w-16 rounded-full" style={{ backgroundColor: "hsl(174 60% 45%)" }} />
+          <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
+            {site.name} combines AI curiosity, data discipline, and product
+            thinking to move from interesting ideas to trustworthy systems.
+          </p>
         </div>
 
-        <div className="mt-14 grid gap-12 md:grid-cols-2 md:items-start">
-          {/* Background */}
-          <div className={isVisible ? "animate-fade-right animate-delay-200" : ""} style={{ opacity: isVisible ? undefined : 0 }}>
-            <h3 className="mb-4 text-lg font-semibold text-foreground">
-              Background
-            </h3>
-            <p className="leading-relaxed text-muted-foreground">
-              {"I am pursuing a Master's in Information Management at the University of Illinois Urbana-Champaign (CGPA: 4.0) with a dual-degree background in Technology Management (MBA) and Electronics Engineering from NMIMS, Mumbai. At Accenture, I spent two years translating regulatory, risk, and data governance requirements into enterprise system workflows, supporting compliant, AI-ready, and analytics-enabled data environments. I bridge the gap between technical data systems and strategic business goals."}
-            </p>
-
-            {/* Focus Areas */}
-            <h3 className="mb-4 mt-8 text-lg font-semibold text-foreground">
-              Focus Areas
-            </h3>
-            <div className="flex flex-col gap-4">
-              {focusAreas.map((area) => (
-                <div
-                  key={area.label}
-                  className="flex items-center gap-4 rounded-xl bg-card p-5 shadow-sm ring-1 ring-border transition-shadow hover:shadow-md"
-                >
-                  <div
-                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg"
-                    style={{ backgroundColor: area.color + " / 0.12" }}
-                  >
-                    <area.icon size={24} style={{ color: area.color }} />
-                  </div>
-                  <span className="text-base font-medium text-foreground">
-                    {area.label}
-                  </span>
+        <div className="mt-14 grid gap-6 md:grid-cols-3">
+          {currentlyCards.map((card, index) => {
+            const { Icon, hover, hue } = icons[index % icons.length];
+            return (
+            <article
+              key={card.label}
+              onMouseMove={trackSpotlight}
+              className={`spotlight group rounded-[1.5rem] border border-border/70 bg-card/70 p-6 shadow-soft backdrop-blur-md transition-transform duration-300 hover:-translate-y-1 ${
+                isVisible ? "animate-fade-up" : ""
+              }`}
+              style={{
+                opacity: isVisible ? undefined : 0,
+                animationDelay: isVisible ? `${120 + index * 120}ms` : undefined,
+              }}
+            >
+              <div
+                className="relative h-12 w-12 animate-[iconFloat_4s_ease-in-out_infinite] motion-reduce:animate-none"
+                style={{ animationDelay: `${index * 0.6}s`, "--tint": hue } as React.CSSProperties}
+              >
+                <div className="flex h-full w-full items-center justify-center rounded-2xl bg-[hsl(var(--tint)/0.1)] text-[hsl(var(--tint))] ring-1 ring-[hsl(var(--tint)/0.15)] transition-all duration-300 group-hover:bg-[hsl(var(--tint))] group-hover:text-white group-hover:shadow-[0_10px_24px_-10px_hsl(var(--tint))]">
+                  <Icon className={`h-5 w-5 ${hover} motion-reduce:animate-none`} />
                 </div>
-              ))}
-            </div>
-          </div>
+                <Sparkle className="absolute -right-1.5 -top-1.5 h-3.5 w-3.5 scale-0 fill-[hsl(var(--tint))] text-[hsl(var(--tint))] opacity-0 group-hover:animate-[sparklePop_0.5s_ease-out_forwards]" />
+              </div>
+              <p className="mt-5 text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                {card.label}
+              </p>
+              <h3 className="mt-3 font-display text-xl font-medium tracking-[-0.03em] text-foreground">
+                {card.value}
+              </h3>
+              <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                {card.description}
+              </p>
+            </article>
+            );
+          })}
+        </div>
 
-          {/* Education */}
-          <div className={isVisible ? "animate-fade-left animate-delay-300" : ""} style={{ opacity: isVisible ? undefined : 0 }}>
-            <h3 className="mb-4 text-lg font-semibold text-foreground">
-              Education
-            </h3>
-            <div className="flex flex-col gap-5">
-              {education.map((edu) => (
-                <div
-                  key={edu.school}
-                  className="rounded-xl bg-card p-5 shadow-sm ring-1 ring-border transition-shadow hover:shadow-md"
-                >
-                  <div className="mb-3 flex items-start gap-3">
-                    <div
-                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg"
-                      style={{ backgroundColor: edu.accent + " / 0.12" }}
-                    >
-                      {edu.logo ? (
-                        <Image
-                          src={edu.logo}
-                          alt={edu.school}
-                          width={24}
-                          height={24}
-                          className="object-contain"
-                        />
-                      ) : (
-                        <GraduationCap size={20} style={{ color: edu.accent }} />
-                      )}
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-semibold text-foreground leading-snug">
-                        {edu.school}
-                      </h4>
-                      {edu.subtitle && (
-                        <p className="text-xs text-muted-foreground">{edu.subtitle}</p>
-                      )}
-                    </div>
-                  </div>
-                  <p className="text-sm font-medium text-foreground">{edu.degree}</p>
-                  <div className="mt-2 flex flex-wrap items-center gap-3">
-                    <span
-                      className="rounded-full px-3 py-1 text-xs font-semibold"
-                      style={{
-                        backgroundColor: edu.accent + " / 0.12",
-                        color: edu.accent,
-                      }}
-                    >
-                      {edu.gpa}
-                    </span>
-                    <span className="text-xs text-muted-foreground">{edu.period}</span>
-                  </div>
-                  <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-                    {edu.coursework}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
+        <div className="mt-10 flex flex-wrap items-center gap-3">
+          <ResumeLink
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-foreground/5"
+          >
+            Resume
+            <ArrowRight className="h-4 w-4" />
+          </ResumeLink>
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background"
+          >
+            Talk to me
+            <ArrowRight className="h-4 w-4" />
+          </a>
         </div>
       </div>
     </section>

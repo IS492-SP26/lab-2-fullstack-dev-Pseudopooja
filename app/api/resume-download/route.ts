@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
-    const { data, error } = await supabase.from("ResumeDownload").insert([
+    const { error } = await supabase.from("ResumeDownload").insert([
       {
         email: email.trim(),
         downloaded_at: new Date().toISOString(),

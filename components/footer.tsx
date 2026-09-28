@@ -1,42 +1,35 @@
-import { Linkedin, Github, Mail } from "lucide-react";
-
-const socials = [
-  {
-    icon: Linkedin,
-    href: "https://www.linkedin.com/in/sahu-pooja/",
-    label: "LinkedIn",
-  },
-  {
-    icon: Github,
-    href: "https://github.com/",
-    label: "GitHub",
-  },
-  {
-    icon: Mail,
-    href: "mailto:Poojads2@illinois.edu",
-    label: "Email",
-  },
-];
+import { ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
+import { site, socialLinks } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-primary py-10">
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-6 md:flex-row md:justify-between">
-        <p className="text-sm text-primary-foreground/60">
-          {"© 2026 Pooja Sahu"}
-        </p>
+    <footer className="border-t border-border bg-[#141414] py-10 text-white">
+      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p className="text-sm text-white/70">© 2026 {site.name}</p>
+          <p className="mt-2 text-sm text-white/50">
+            Built with curiosity, data, and a healthy respect for clean systems.
+          </p>
+        </div>
 
-        <div className="flex items-center gap-4">
-          {socials.map((social) => (
+        <div className="flex flex-wrap items-center gap-3">
+          {socialLinks.map((social) => (
             <a
               key={social.label}
               href={social.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex h-10 w-10 items-center justify-center rounded-full text-primary-foreground/60 transition-colors hover:bg-primary-foreground/10 hover:text-primary-foreground"
-              aria-label={social.label}
+              target={social.label === "Email" ? undefined : "_blank"}
+              rel={social.label === "Email" ? undefined : "noopener noreferrer"}
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-white"
             >
-              <social.icon size={18} />
+              {social.label === "LinkedIn" ? (
+                <Linkedin className="h-4 w-4" />
+              ) : social.label === "GitHub" ? (
+                <Github className="h-4 w-4" />
+              ) : (
+                <Mail className="h-4 w-4" />
+              )}
+              {social.label}
+              <ArrowUpRight className="h-4 w-4" />
             </a>
           ))}
         </div>
