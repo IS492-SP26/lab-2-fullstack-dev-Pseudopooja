@@ -1,16 +1,40 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { ArrowRight, ArrowUpRight, Github, Linkedin } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Github, Linkedin, MapPin } from "lucide-react";
 import profilePic from "./ProfilePic.jpeg";
 import { site } from "@/lib/site";
+
+function RotatingRole({ roles }: { roles: readonly string[] }) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = setInterval(() => setIndex((i) => (i + 1) % roles.length), 2600);
+    return () => clearInterval(id);
+  }, [roles.length]);
+
+  return (
+    <span className="relative inline-grid font-medium text-foreground">
+      <span className="sr-only">{roles.join(", ")}</span>
+      {/* Longest role reserves the width so the pill never jumps */}
+      <span className="invisible col-start-1 row-start-1" aria-hidden>
+        {roles.reduce((a, b) => (b.length > a.length ? b : a))}
+      </span>
+      <span key={roles[index]} className="animate-role-in col-start-1 row-start-1" aria-hidden>
+        {roles[index]}
+      </span>
+    </span>
+  );
+}
 
 export function Hero() {
   return (
     <section id="hero" className="relative overflow-hidden pt-28 sm:pt-32 lg:pt-36">
       <div className="absolute inset-x-0 top-0 -z-10 h-[42rem] bg-[radial-gradient(circle_at_top_left,_rgba(109,91,255,0.12),_transparent_28%),radial-gradient(circle_at_top_right,_rgba(17,17,17,0.06),_transparent_24%)]" />
 
-      <div className="mx-auto grid max-w-6xl gap-14 px-6 pb-18 lg:grid-cols-[1.25fr_0.85fr] lg:items-center lg:gap-10 lg:pb-28">
+      <div className="mx-auto grid max-w-6xl gap-14 px-6 pb-20 lg:grid-cols-[1.25fr_0.85fr] lg:items-center lg:gap-10 lg:pb-28">
         <div className="max-w-3xl">
           <div className="animate-fade-up">
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground">
@@ -20,23 +44,19 @@ export function Hero() {
               {site.headline}
             </h1>
             <p className="mt-6 max-w-2xl text-pretty text-lg leading-8 text-muted-foreground sm:text-xl">
-              {site.name} is building at the intersection of machine learning,
-              enterprise data, and product thinking. Calm interfaces, precise
-              systems, and work that is easy to trust.
+              I&apos;m Pooja — a data scientist with a product mindset, obsessed
+              with making AI genuinely useful, not just impressive.
             </p>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-3 text-sm text-foreground">
-            {site.roles.map((role, index) => (
-              <span
-                key={role}
-                className={`rounded-full border border-border bg-background/70 px-4 py-2 backdrop-blur-sm ${
-                  index === 0 ? "shadow-soft" : ""
-                }`}
-              >
-                {role}
+          <div className="mt-8 flex flex-wrap items-center gap-3 text-sm">
+            <span className="inline-flex items-center gap-2.5 rounded-full border border-border bg-card px-4 py-2 shadow-soft">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[hsl(var(--accent))] opacity-60 motion-reduce:hidden" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[hsl(var(--accent))]" />
               </span>
-            ))}
+              <RotatingRole roles={site.roles} />
+            </span>
             <span className="rounded-full border border-border bg-foreground/5 px-4 py-2 text-muted-foreground">
               {site.graduation}
             </span>
@@ -83,36 +103,32 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-[28rem] animate-scale-in lg:justify-self-end">
-          <div className="absolute -inset-3 -z-10 rounded-[2rem] bg-[radial-gradient(circle_at_top_left,_rgba(109,91,255,0.18),_transparent_55%)] blur-2xl" />
-          <div className="overflow-hidden rounded-[2rem] border border-border bg-card shadow-soft">
-            <div className="relative aspect-[4/5] w-full overflow-hidden bg-foreground/5">
+        <figure className="group mx-auto w-full max-w-[23rem] animate-scale-in pr-3 lg:justify-self-end">
+          <div className="relative">
+            {/* Offset outline, like a matted print */}
+            <div
+              aria-hidden
+              className="absolute inset-0 translate-x-3 translate-y-3 rounded-[1.75rem] border border-foreground/15 transition-transform duration-500 ease-out group-hover:translate-x-4 group-hover:translate-y-4"
+            />
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-foreground/5 shadow-soft">
               <Image
                 src={profilePic}
                 alt="Portrait of Pooja Sahu"
                 fill
                 priority
-                sizes="(max-width: 1024px) 90vw, 28rem"
-                className="object-cover object-[50%_18%]"
+                sizes="(max-width: 1024px) 90vw, 23rem"
+                className="object-cover object-[45%_40%] transition-transform duration-700 ease-out group-hover:scale-[1.02]"
               />
             </div>
-            <div className="border-t border-border bg-background/95 p-5 backdrop-blur-sm">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
-                    Currently building
-                  </p>
-                  <p className="mt-2 text-sm font-medium text-foreground">
-                    AI + data products with product judgment.
-                  </p>
-                </div>
-                <span className="rounded-full border border-border bg-foreground/5 px-3 py-1 text-xs font-medium text-muted-foreground">
-                  {site.location}
-                </span>
-              </div>
-            </div>
           </div>
-        </div>
+          <figcaption className="mt-7 flex items-center justify-between text-[0.7rem] uppercase tracking-[0.28em] text-muted-foreground">
+            <span>{site.name}</span>
+            <span className="inline-flex items-center gap-1.5">
+              <MapPin className="h-3 w-3" />
+              {site.location}
+            </span>
+          </figcaption>
+        </figure>
       </div>
     </section>
   );

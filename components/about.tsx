@@ -1,8 +1,16 @@
 "use client";
 
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Blocks, BrainCircuit, Sparkle, Telescope } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { currentlyCards, site } from "@/lib/site";
+import { trackSpotlight } from "@/lib/spotlight";
+
+// Each card gets its own icon, hover animation, and tint from the background palette
+const icons = [
+  { Icon: Blocks, hover: "group-hover:animate-[iconStack_0.9s_ease-in-out]", hue: "248 75% 62%" },
+  { Icon: BrainCircuit, hover: "group-hover:animate-[iconPulse_1.1s_ease-in-out_infinite]", hue: "22 85% 58%" },
+  { Icon: Telescope, hover: "group-hover:animate-[iconScan_1.4s_ease-in-out]", hue: "165 50% 40%" },
+];
 
 export function About() {
   const { ref, isVisible } = useScrollAnimation();
@@ -28,10 +36,13 @@ export function About() {
         </div>
 
         <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {currentlyCards.map((card, index) => (
+          {currentlyCards.map((card, index) => {
+            const { Icon, hover, hue } = icons[index % icons.length];
+            return (
             <article
               key={card.label}
-              className={`rounded-[1.5rem] border border-border bg-card p-6 shadow-soft transition-transform duration-300 hover:-translate-y-1 ${
+              onMouseMove={trackSpotlight}
+              className={`spotlight group rounded-[1.5rem] border border-border/70 bg-card/70 p-6 shadow-soft backdrop-blur-md transition-transform duration-300 hover:-translate-y-1 ${
                 isVisible ? "animate-fade-up" : ""
               }`}
               style={{
@@ -39,8 +50,14 @@ export function About() {
                 animationDelay: isVisible ? `${120 + index * 120}ms` : undefined,
               }}
             >
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-foreground/5 text-foreground">
-                <Sparkles className="h-5 w-5" />
+              <div
+                className="relative h-12 w-12 animate-[iconFloat_4s_ease-in-out_infinite] motion-reduce:animate-none"
+                style={{ animationDelay: `${index * 0.6}s`, "--tint": hue } as React.CSSProperties}
+              >
+                <div className="flex h-full w-full items-center justify-center rounded-2xl bg-[hsl(var(--tint)/0.1)] text-[hsl(var(--tint))] ring-1 ring-[hsl(var(--tint)/0.15)] transition-all duration-300 group-hover:bg-[hsl(var(--tint))] group-hover:text-white group-hover:shadow-[0_10px_24px_-10px_hsl(var(--tint))]">
+                  <Icon className={`h-5 w-5 ${hover} motion-reduce:animate-none`} />
+                </div>
+                <Sparkle className="absolute -right-1.5 -top-1.5 h-3.5 w-3.5 scale-0 fill-[hsl(var(--tint))] text-[hsl(var(--tint))] opacity-0 group-hover:animate-[sparklePop_0.5s_ease-out_forwards]" />
               </div>
               <p className="mt-5 text-xs uppercase tracking-[0.3em] text-muted-foreground">
                 {card.label}
@@ -52,16 +69,11 @@ export function About() {
                 {card.description}
               </p>
             </article>
-          ))}
+            );
+          })}
         </div>
 
-        <div className="mt-10 flex items-center gap-3 text-sm text-muted-foreground">
-          <span className="h-px flex-1 bg-border" />
-          <span>Built to feel calm, not crowded.</span>
-          <span className="h-px flex-1 bg-border" />
-        </div>
-
-        <div className="mt-6 flex flex-wrap items-center gap-3">
+        <div className="mt-10 flex flex-wrap items-center gap-3">
           <a
             href={site.resume}
             target="_blank"

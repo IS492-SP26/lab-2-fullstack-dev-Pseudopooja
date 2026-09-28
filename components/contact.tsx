@@ -125,7 +125,7 @@ export function Contact() {
 
         <div className="mt-14 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
           <div className={isVisible ? "animate-fade-right" : ""} style={{ opacity: isVisible ? undefined : 0 }}>
-            <div className="rounded-[1.5rem] border border-border bg-card p-6 shadow-soft">
+            <div className="rounded-[1.5rem] border border-border/70 bg-card/70 p-6 shadow-soft backdrop-blur-md">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
                 Direct access
               </p>
@@ -163,7 +163,7 @@ export function Contact() {
 
           <form
             onSubmit={handleSubmit}
-            className={`rounded-[1.5rem] border border-border bg-card p-6 shadow-soft ${isVisible ? "animate-fade-left" : ""}`}
+            className={`rounded-[1.5rem] border border-border/70 bg-card/70 p-6 shadow-soft backdrop-blur-md ${isVisible ? "animate-fade-left" : ""}`}
             style={{ opacity: isVisible ? undefined : 0 }}
             noValidate
           >

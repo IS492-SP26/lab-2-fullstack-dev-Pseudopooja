@@ -13,7 +13,7 @@ const displayFont = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://pooja-sahu-portfolio.vercel.app"),
+  metadataBase: new URL("https://www.poojasahu.tech"),
   title: "Pooja Sahu — AI & Data Science",
   description:
     "AI, machine learning, data engineering, and technical product portfolio of Pooja Sahu, MSIM candidate at the University of Illinois Urbana-Champaign.",
