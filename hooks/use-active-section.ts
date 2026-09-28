@@ -2,26 +2,43 @@
 
 import { useEffect, useState } from "react";
 
-// Returns the id of the section currently crossing the upper third of the viewport.
+// Returns the id of the section containing the reading line (40% down the viewport).
+// Computed from scroll position rather than intersection events, so fast scrolling
+// can never skip a section and leave a stale highlight.
 export function useActiveSection(ids: readonly string[]) {
   const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
-    const sections = ids
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => el !== null);
+    let frame = 0;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) setActive(entry.target.id);
+    const update = () => {
+      const line = window.innerHeight * 0.4;
+      let current: string | null = null;
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const { top, bottom } = el.getBoundingClientRect();
+        if (top <= line && bottom > line) {
+          current = id;
+          break;
         }
-      },
-      { rootMargin: "-35% 0px -60% 0px" }
-    );
+      }
+      setActive(current);
+    };
 
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, [ids]);
 
   return active;
